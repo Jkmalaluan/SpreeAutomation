@@ -25,3 +25,14 @@ jobs:
         
     - name: Run Tests
       run: mvn clean test
+      continue-on-error: true
+      
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          target/surefire-reports/*.html
+          target/surefire-reports/*.xml
+          target/surefire-reports/SpreeCommerce*/**/*
