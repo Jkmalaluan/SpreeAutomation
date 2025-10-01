@@ -5,6 +5,7 @@ import org.testng.annotations.AfterClass;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.BrowserContext;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class BaseTest {
     
@@ -17,15 +18,21 @@ public class BaseTest {
     @BeforeClass
     public void setUp() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(
-            new BrowserType.LaunchOptions()
-                .setHeadless(true));
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+            .setHeadless(true)
+            .setTimeout(30000) // 30 second timeout for browser launch
+            .setArgs(Arrays.asList(
+                "--no-sandbox",
+                "--disable-dev-shm-usage", // Prevents issues with limited resource environments
+                "--disable-gpu"
+            )));
         
-        // Create context with tracing options
-         context = browser.newContext(new Browser.NewContextOptions()
+        // Create context with tracing options and viewport size
+        context = browser.newContext(new Browser.NewContextOptions()
             .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
             .setRecordHarPath(Paths.get(TEST_RESULTS_DIR, "har", "trace.har"))
-         );
+            .setViewportSize(1920, 1080)
+     );
         
         // Start tracing
         context.tracing().start(new Tracing.StartOptions()
@@ -35,6 +42,10 @@ public class BaseTest {
         );
             
         page = context.newPage();
+        
+        // Set default timeouts
+        page.setDefaultNavigationTimeout(30000);
+        page.setDefaultTimeout(10000);
     }
 
     @AfterClass

@@ -15,16 +15,6 @@ public class EndToEndTest extends BaseTest {
     private PaymentPage paymentPage;
     private String randomEmail;
     
-    // Test data fields to store current test data
-    private String productName;
-    private String size;
-    private String country;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String postalCode;
-    
     @Test
     public void navigateToHomePage() {
         registrationPage = new RegistrationPage(page);
@@ -67,16 +57,6 @@ public class EndToEndTest extends BaseTest {
     public void searchAndSelectProduct(String productName, String size, String country, 
                                      String firstName, String lastName, String address, 
                                      String city, String postalCode) {
-        
-        this.productName = productName;
-        this.size = size;
-        this.country = country;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        
         productPage.clickSearchButton();
         productPage.enterProductName(productName);
         productPage.clickProduct(productName);
@@ -90,8 +70,10 @@ public class EndToEndTest extends BaseTest {
         Assert.assertNotNull(orderDetails.getOrderTotal(), "Order total should not be null");
     }
     
-    @Test(dependsOnMethods = "searchAndSelectProduct")
-    public void checkout() {
+    @Test(dependsOnMethods = "searchAndSelectProduct", dataProvider = "orderData", dataProviderClass = OrderTestData.class)
+    public void checkout(String productName, String size, String country, 
+                        String firstName, String lastName, String address, 
+                        String city, String postalCode) {
         detailsPage.clickCheckOUt();
         checkoutPage.fillShippingForm(
             country,
@@ -104,7 +86,7 @@ public class EndToEndTest extends BaseTest {
     }
     
     @Test(dependsOnMethods = "checkout")
-    public void payment() {
+    public void payment() throws InterruptedException {
         paymentPage.enterCardDetails(
             TestData.PaymentData.CARD_NUMBER,
             TestData.PaymentData.CARD_EXPIRY,
@@ -115,5 +97,6 @@ public class EndToEndTest extends BaseTest {
 
         Assert.assertTrue(paymentPage.isSuccessMessageDisplayed(), "Order confirmation message is not visible");
         Assert.assertNotNull(paymentPage.getOrderNumber(), "Order number should not be null");
+        Thread.sleep(3000);
     }
 }
