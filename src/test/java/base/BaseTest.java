@@ -23,7 +23,7 @@ public class BaseTest {
         
         // Create context with tracing options
          context = browser.newContext(new Browser.NewContextOptions()
-             .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
+            .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
             .setRecordHarPath(Paths.get(TEST_RESULTS_DIR, "har", "trace.har"))
          );
         
@@ -31,7 +31,8 @@ public class BaseTest {
         context.tracing().start(new Tracing.StartOptions()
             .setScreenshots(true)
             .setSnapshots(true)
-            .setSources(true));
+            .setSources(true)
+        );
             
         page = context.newPage();
     }
