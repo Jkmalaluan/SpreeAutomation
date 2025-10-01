@@ -67,7 +67,7 @@ public class EndToEndTest extends BaseTest {
     public void searchAndSelectProduct(String productName, String size, String country, 
                                      String firstName, String lastName, String address, 
                                      String city, String postalCode) {
-        // Store test data for use in dependent methods
+        
         this.productName = productName;
         this.size = size;
         this.country = country;

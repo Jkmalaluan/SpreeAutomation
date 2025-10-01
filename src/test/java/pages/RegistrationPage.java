@@ -32,7 +32,8 @@ public class RegistrationPage extends BasePage {
 
     public void clickProfileButton() {
         waitForElement(page.locator(profileButton));
-        clickElement(profileButton);
+        clickElementWithValidation(profileButton,
+        "//div[@id='account-pane' and contains(@class, 'opacity-100') and not(contains(@class, 'hidden'))]");
     }
 
     public void clickProfileLoggedInButton() {
@@ -69,7 +70,6 @@ public class RegistrationPage extends BasePage {
 
     public boolean isLoginSuccess() {
         try {
-            // Wait for any one of these indicators of successful login
             return page.locator(loginSuccessMessage).isVisible() || 
                    page.locator("//div[contains(@class, 'logged-in')]").isVisible() ||
                    page.locator(profileLoggedInButton).isVisible();

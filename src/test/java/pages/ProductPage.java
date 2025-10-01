@@ -26,12 +26,10 @@ public class ProductPage extends BasePage {
         // Wait for the search results to load
         page.waitForLoadState();
         
-        // Use product title instead of image
         String productSelector = String.format(productCard, productName);
         waitForElement(page.locator(productSelector));
         clickElement(productSelector);
         
-        // Wait for product page to plad
         page.waitForLoadState();
     }
 }

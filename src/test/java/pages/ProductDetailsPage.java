@@ -20,12 +20,13 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void selectSizeOption(String sizeOption) {
+        String specificSizeLocator = String.format(sizeOptionLocator, sizeOption);
+        
         page.waitForLoadState();
         waitForElement(page.locator(sizeOptionButton));
-        clickElement(sizeOptionButton);
+        clickElementWithValidation(sizeOptionButton,specificSizeLocator);
         waitForElement(page.locator(sizeOptionDropdown));
         clickElement(sizeOptionDropdown);
-        String specificSizeLocator = String.format(sizeOptionLocator, sizeOption);
         waitForElement(page.locator(specificSizeLocator)); 
         clickElement(specificSizeLocator);
     }

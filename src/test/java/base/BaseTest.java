@@ -22,10 +22,10 @@ public class BaseTest {
                 .setHeadless(true));
         
         // Create context with tracing options
-        context = browser.newContext(new Browser.NewContextOptions()
-            .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
+         context = browser.newContext(new Browser.NewContextOptions()
+             .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
             .setRecordHarPath(Paths.get(TEST_RESULTS_DIR, "har", "trace.har"))
-        );
+         );
         
         // Start tracing
         context.tracing().start(new Tracing.StartOptions()
