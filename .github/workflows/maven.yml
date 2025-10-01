@@ -27,12 +27,22 @@ jobs:
       run: mvn clean test
       continue-on-error: true
       
-    - name: Upload Test Results
+    - name: Upload Playwright Report
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results
+        name: playwright-report
+        path: |
+          target/test-results/videos/
+          target/test-results/har/
+          target/test-results/trace.zip
+          target/test-results/report/
+        
+    - name: Upload TestNG Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: testng-report
         path: |
           target/surefire-reports/*.html
           target/surefire-reports/*.xml
-          target/surefire-reports/SpreeCommerce*/**/*
