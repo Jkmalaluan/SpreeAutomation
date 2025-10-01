@@ -1,0 +1,7 @@
+<suite name="SpreeCommerce Test Suite">
+    <test name="SpreeCommerce Tests">
+        <classes>
+            <class name="test.Home"/>
+        </classes>
+    </test>
+</suite>
