@@ -19,7 +19,8 @@ public class ProductPage extends BasePage {
     }
     
     public void clickSearchButton() {
-        clickElement(searchButton);
+        waitForElement(page.locator(searchButton));
+        clickElementWithValidation(searchButton, searchBox);
     }
 
     public void clickProduct(String productName) {

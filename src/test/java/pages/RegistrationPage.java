@@ -70,6 +70,7 @@ public class RegistrationPage extends BasePage {
 
     public boolean isLoginSuccess() {
         try {
+            waitForElement(page.locator(loginSuccessMessage));
             return page.locator(loginSuccessMessage).isVisible() || 
                    page.locator("//div[contains(@class, 'logged-in')]").isVisible() ||
                    page.locator(profileLoggedInButton).isVisible();

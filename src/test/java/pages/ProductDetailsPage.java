@@ -46,6 +46,6 @@ public class ProductDetailsPage extends BasePage {
 
     public void clickAddToCart() {
         waitForElement(page.locator(addToCartButton));
-        clickElement(addToCartButton);
+        clickElementWithValidation(addToCartButton, checkoutButton);
     }
 }

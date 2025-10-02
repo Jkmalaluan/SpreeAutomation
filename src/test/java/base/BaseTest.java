@@ -19,7 +19,6 @@ public class BaseTest {
     public void setUp() {
         playwright = Playwright.create();
         
-        // Enhanced browser launch options for CI environment
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
             .setHeadless(true)
             .setTimeout(45000)
@@ -28,25 +27,27 @@ public class BaseTest {
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
                 "--disable-web-security",
-                "--disable-features=IsolateOrigins,site-per-process",
+                "--disable-features=IsolateOrigins",
                 "--disable-setuid-sandbox",
-                "--window-size=1920,1080",
+                "--start-maximized",
                 "--force-gpu-mem-available-mb=1024"
             )));
         
-        // Create context with more resilient settings
         context = browser.newContext(new Browser.NewContextOptions()
             .setRecordVideoDir(Paths.get(TEST_RESULTS_DIR, "videos"))
             .setRecordHarPath(Paths.get(TEST_RESULTS_DIR, "har", "trace.har"))
-            .setViewportSize(1920, 1080)
+              // Set a large standard viewport size
             .setBypassCSP(true)
             .setIgnoreHTTPSErrors(true)
-            .setServiceWorkers(ServiceWorkerPolicy.ALLOW)  // Allow service workers
+            .setServiceWorkers(ServiceWorkerPolicy.ALLOW)
+            .setHasTouch(true)
+            .setJavaScriptEnabled(true)
             .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36")
             .setExtraHTTPHeaders(new java.util.HashMap<String, String>() {{
                 put("Accept-Language", "en-US,en;q=0.9");
-                put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                put("Accept", "*/*");
                 put("Connection", "keep-alive");
+                put("Cache-Control", "no-cache");
                 put("Upgrade-Insecure-Requests", "1");
             }})
         );
@@ -65,9 +66,7 @@ public class BaseTest {
         page.setDefaultTimeout(30000);
         
         // Wait for all resource types
-        page.route("**/*", route -> {
-            route.resume(); // Fixed method name from continue_() to resume()
-        });
+        page.route("**/*", route -> route.resume());
     }
 
     @AfterClass
